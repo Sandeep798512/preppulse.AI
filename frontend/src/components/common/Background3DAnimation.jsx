@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
 /**
- * High-Performance Continuous 3D Neural Mesh & Cybernetic Particle Canvas
+ * Ultra-Premium 3D Continuous Interactive Cybernetic & Neural Particle Canvas
  * Features:
- * - True 3D perspective projection (X, Y, Z coordinates with FOV)
- * - Continuous 3D rotation & orbital motion
- * - Interactive mouse camera parallax
- * - Interconnected neural synapse lines with depth-fading glow
- * - Zero external dependencies, pure 60fps hardware-accelerated Canvas
+ * - True 3D wireframe rotating globe / icosahedron at center
+ * - Continuous 3D floating constellation with depth projection
+ * - Glowing laser pulses and dynamic neural synapse lines
+ * - Fixed background positioning (smooth 60fps across the entire hero & scroll)
+ * - Interactive mouse parallax rotation
  */
 export default function Background3DAnimation() {
   const canvasRef = useRef(null);
@@ -18,29 +18,30 @@ export default function Background3DAnimation() {
 
     const ctx = canvas.getContext('2d');
     let animationFrameId;
+
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    // 3D Scene Config
-    const FOV = 400;
-    const PARTICLE_COUNT = 90;
-    const MAX_DISTANCE = 140;
+    // 3D Scene Parameters
+    const FOV = 450;
+    const PARTICLE_COUNT = 85;
+    const MAX_CONNECT_DIST = 150;
 
-    // Camera angles
+    // Camera rotation angles
     let angleY = 0;
-    let angleX = 0.2;
+    let angleX = 0.15;
     let targetAngleY = 0;
-    let targetAngleX = 0.2;
+    let targetAngleX = 0.15;
 
-    // Mouse interaction
     const handleMouseMove = (e) => {
       const mouseX = (e.clientX / width) * 2 - 1;
       const mouseY = (e.clientY / height) * 2 - 1;
-      targetAngleY = mouseX * 0.45;
-      targetAngleX = mouseY * 0.35;
+      targetAngleY = mouseX * 0.4;
+      targetAngleX = mouseY * 0.25;
     };
 
     const handleResize = () => {
+      if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
@@ -48,45 +49,65 @@ export default function Background3DAnimation() {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', handleResize);
 
-    // Generate 3D Particles
+    // 1. Constellation Particles
     const particles = [];
     const colors = [
-      'rgba(56, 189, 248, ',  // Sky/Cyan
-      'rgba(168, 85, 247, ',  // Purple/Violet
-      'rgba(99, 102, 241, ',  // Indigo
-      'rgba(236, 72, 153, ',  // Pink
-      'rgba(16, 185, 129, ',  // Emerald
+      { r: 56, g: 189, b: 248 },  // Electric Cyan
+      { r: 168, g: 85, b: 247 },  // Neon Violet
+      { r: 99, g: 102, b: 241 },  // Vibrant Indigo
+      { r: 236, g: 72, b: 153 },  // Radiant Pink
+      { r: 16, g: 185, b: 129 },  // Emerald
+      { r: 245, g: 158, b: 11 },  // Golden Amber
     ];
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      // Position particles in a spherical / cylinder volume
-      const radius = 250 + Math.random() * 450;
+      const rad = 200 + Math.random() * 450;
       const theta = Math.random() * Math.PI * 2;
       const phi = (Math.random() - 0.5) * Math.PI;
 
       particles.push({
-        x: radius * Math.cos(theta) * Math.cos(phi),
-        y: radius * Math.sin(phi) + (Math.random() - 0.5) * 100,
-        z: radius * Math.sin(theta) * Math.cos(phi),
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        vz: (Math.random() - 0.5) * 0.3,
-        baseRadius: Math.random() * 2.5 + 1.2,
-        colorPrefix: colors[Math.floor(Math.random() * colors.length)],
+        x: rad * Math.cos(theta) * Math.cos(phi),
+        y: rad * Math.sin(phi) * 0.85,
+        z: rad * Math.sin(theta) * Math.cos(phi),
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        vz: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 2.2 + 1.2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        pulse: Math.random() * Math.PI,
         pulseSpeed: 0.02 + Math.random() * 0.03,
-        pulseOffset: Math.random() * Math.PI * 2,
       });
+    }
+
+    // 2. Central 3D Rotating Geometric Wireframe Sphere/Polyhedron
+    const sphereVertices = [];
+    const sphereRadius = 180;
+    const rings = 8;
+    const slices = 12;
+
+    for (let r = 0; r <= rings; r++) {
+      const v = (r / rings) * Math.PI;
+      for (let s = 0; s < slices; s++) {
+        const u = (s / slices) * Math.PI * 2;
+        sphereVertices.push({
+          x: sphereRadius * Math.sin(v) * Math.cos(u),
+          y: sphereRadius * Math.cos(v) * 0.9,
+          z: sphereRadius * Math.sin(v) * Math.sin(u),
+          ring: r,
+          slice: s,
+        });
+      }
     }
 
     let time = 0;
 
-    // 3D Render Loop
+    // Render Loop
     const render = () => {
-      time += 0.015;
+      time += 0.016;
 
-      // Smooth camera interpolation towards mouse target
-      angleY += (targetAngleY - angleY) * 0.05 + 0.0018; // auto continuous 3D rotation
-      angleX += (targetAngleX - angleX) * 0.05;
+      // Smooth camera interpolation with continuous auto rotation
+      angleY += (targetAngleY - angleY) * 0.04 + 0.0022;
+      angleX += (targetAngleX - angleX) * 0.04;
 
       ctx.clearRect(0, 0, width, height);
 
@@ -95,60 +116,106 @@ export default function Background3DAnimation() {
       const cosX = Math.cos(angleX);
       const sinX = Math.sin(angleX);
 
-      const projected = [];
+      const centerY = height * 0.42; // Center behind Hero text
 
-      // Project each particle to 2D screen coordinates
+      // A. Draw Central 3D Wireframe Globe
+      const projectedGlobe = [];
+      for (let i = 0; i < sphereVertices.length; i++) {
+        const v = sphereVertices[i];
+
+        // Rotate globe slightly opposite to create dual depth
+        const globeAngleY = angleY * 1.2 + time * 0.15;
+        const gCosY = Math.cos(globeAngleY);
+        const gSinY = Math.sin(globeAngleY);
+
+        const x1 = v.x * gCosY - v.z * gSinY;
+        const z1 = v.z * gCosY + v.x * gSinY;
+
+        const y2 = v.y * cosX - z1 * sinX;
+        const z2 = z1 * cosX + v.y * sinX;
+
+        const camZ = z2 + 620;
+        if (camZ > 50) {
+          const scale = FOV / camZ;
+          projectedGlobe.push({
+            x: x1 * scale + width / 2,
+            y: y2 * scale + centerY,
+            z: camZ,
+            ring: v.ring,
+            slice: v.slice,
+          });
+        }
+      }
+
+      // Connect globe wireframe lines
+      ctx.lineWidth = 0.8;
+      for (let i = 0; i < projectedGlobe.length; i++) {
+        const p1 = projectedGlobe[i];
+        for (let j = i + 1; j < projectedGlobe.length; j++) {
+          const p2 = projectedGlobe[j];
+          // Connect adjacent in same ring or same slice
+          if (
+            (p1.ring === p2.ring && Math.abs(p1.slice - p2.slice) === 1) ||
+            (p1.slice === p2.slice && Math.abs(p1.ring - p2.ring) === 1)
+          ) {
+            const alpha = Math.max(0.04, Math.min(0.22, (800 - p1.z) / 900));
+            ctx.strokeStyle = `rgba(147, 197, 253, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // B. Project & Draw 3D Constellation Particles
+      const projected = [];
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
 
-        // Animate slight drift
         p.x += p.vx;
         p.y += p.vy;
         p.z += p.vz;
+        p.pulse += p.pulseSpeed;
 
-        // Wrap boundaries
-        if (p.x > 600) p.x = -600;
-        if (p.x < -600) p.x = 600;
-        if (p.y > 400) p.y = -400;
-        if (p.y < -400) p.y = 400;
-        if (p.z > 600) p.z = -600;
-        if (p.z < -600) p.z = 600;
+        if (p.x > 650) p.x = -650;
+        if (p.x < -650) p.x = 650;
+        if (p.y > 450) p.y = -450;
+        if (p.y < -450) p.y = 450;
+        if (p.z > 650) p.z = -650;
+        if (p.z < -650) p.z = 650;
 
-        // 3D Rotation around Y then X
         const x1 = p.x * cosY - p.z * sinY;
         const z1 = p.z * cosY + p.x * sinY;
 
         const y2 = p.y * cosX - z1 * sinX;
         const z2 = z1 * cosX + p.y * sinX;
 
-        // Camera distance offset
-        const cameraZ = z2 + 650;
-
-        if (cameraZ > 20) {
-          const scale = FOV / cameraZ;
+        const camZ = z2 + 650;
+        if (camZ > 50) {
+          const scale = FOV / camZ;
           const projX = x1 * scale + width / 2;
-          const projY = y2 * scale + height / 2 - 40; // slight lift towards hero
+          const projY = y2 * scale + centerY;
 
-          // Depth-based opacity & size
-          const alphaFactor = Math.max(0.1, Math.min(1, (1000 - cameraZ) / 800));
-          const currentRadius = p.baseRadius * scale * (1 + 0.3 * Math.sin(time * 3 + p.pulseOffset));
+          const depthAlpha = Math.max(0.2, Math.min(1, (1000 - camZ) / 750));
+          const currentRadius = p.radius * scale * (1 + 0.35 * Math.sin(p.pulse));
 
           projected.push({
             x: projX,
             y: projY,
-            z: cameraZ,
+            z: camZ,
             scale,
-            alphaFactor,
+            alpha: depthAlpha,
             radius: currentRadius,
-            colorPrefix: p.colorPrefix,
+            color: p.color,
           });
         }
       }
 
-      // Sort by depth (painters algorithm)
+      // Sort depth
       projected.sort((a, b) => b.z - a.z);
 
-      // Draw 3D Neural Synapse Connections between close particles
+      // Draw connection lines
       for (let i = 0; i < projected.length; i++) {
         const p1 = projected[i];
 
@@ -158,38 +225,40 @@ export default function Background3DAnimation() {
           const dy = p1.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < MAX_DISTANCE * ((p1.scale + p2.scale) / 2)) {
-            const lineAlpha = (1 - dist / (MAX_DISTANCE * ((p1.scale + p2.scale) / 2))) * 0.28 * Math.min(p1.alphaFactor, p2.alphaFactor);
+          const maxDist = MAX_CONNECT_DIST * ((p1.scale + p2.scale) / 2);
+          if (dist < maxDist) {
+            const lineAlpha = (1 - dist / maxDist) * 0.42 * Math.min(p1.alpha, p2.alpha);
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(129, 140, 248, ${lineAlpha})`;
-            ctx.lineWidth = Math.max(0.6, 1.4 * p1.scale);
+            ctx.strokeStyle = `rgba(167, 139, 250, ${lineAlpha})`;
+            ctx.lineWidth = Math.max(0.7, 1.6 * p1.scale);
             ctx.stroke();
           }
         }
       }
 
-      // Draw Glowing Particles
+      // Draw Glowing Nodes
       for (let i = 0; i < projected.length; i++) {
         const p = projected[i];
+        const { r, g, b } = p.color;
 
-        // Outer glow
-        const glowRadius = Math.max(2, p.radius * 3.5);
-        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
-        gradient.addColorStop(0, `${p.colorPrefix}${0.85 * p.alphaFactor})`);
-        gradient.addColorStop(0.4, `${p.colorPrefix}${0.35 * p.alphaFactor})`);
-        gradient.addColorStop(1, `${p.colorPrefix}0)`);
+        // Outer Glow Halo
+        const glowRad = Math.max(3, p.radius * 4.5);
+        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRad);
+        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${0.9 * p.alpha})`);
+        grad.addColorStop(0.35, `rgba(${r}, ${g}, ${b}, ${0.45 * p.alpha})`);
+        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
+        ctx.arc(p.x, p.y, glowRad, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
         ctx.fill();
 
-        // Core bright center
+        // Inner Core
         ctx.beginPath();
-        ctx.arc(p.x, p.y, Math.max(1, p.radius * 0.9), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${0.95 * p.alphaFactor})`;
+        ctx.arc(p.x, p.y, Math.max(1.2, p.radius * 0.9), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${0.98 * p.alpha})`;
         ctx.fill();
       }
 
@@ -206,39 +275,39 @@ export default function Background3DAnimation() {
   }, []);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-      {/* 3D Canvas Layer */}
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {/* 3D Hardware Accelerated Canvas */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block opacity-75 sm:opacity-90 transition-opacity duration-1000"
+        className="w-full h-full block"
       />
 
-      {/* Futuristic 3D Cybernetic Floating Rings & Core */}
-      <div className="absolute top-[18%] left-1/2 -translate-x-1/2 w-[580px] h-[580px] sm:w-[780px] sm:h-[780px] pointer-events-none select-none opacity-40 -z-10">
-        {/* Outer Ring */}
+      {/* Floating 3D Concentric Cybernetic Rings with Ambient Glow */}
+      <div className="absolute top-[28%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] sm:w-[820px] sm:h-[820px] pointer-events-none select-none opacity-60">
+        {/* Outer Cyan Dashed Ring */}
         <div
-          className="absolute inset-0 rounded-full border border-dashed border-indigo-500/25 animate-spin"
-          style={{ animationDuration: '45s' }}
+          className="absolute inset-0 rounded-full border-2 border-dashed border-cyan-400/30 animate-spin"
+          style={{ animationDuration: '40s' }}
         />
-        {/* Middle Ring with Gradient */}
+        {/* Middle Violet Rotating Ring */}
         <div
-          className="absolute inset-[45px] rounded-full border border-cyan-400/20 animate-spin"
-          style={{ animationDuration: '30s', animationDirection: 'reverse' }}
+          className="absolute inset-[60px] rounded-full border border-purple-500/35 animate-spin"
+          style={{ animationDuration: '28s', animationDirection: 'reverse' }}
         />
         {/* Inner Pulsing Radar Ring */}
         <div
-          className="absolute inset-[110px] rounded-full border border-purple-500/30 animate-pulse"
-          style={{ animationDuration: '4s' }}
+          className="absolute inset-[130px] rounded-full border-2 border-indigo-400/40 animate-pulse"
+          style={{ animationDuration: '3.5s' }}
         />
-        {/* Central Ambient Glow */}
-        <div className="absolute inset-[180px] rounded-full bg-gradient-to-tr from-indigo-500/15 via-purple-500/15 to-cyan-500/10 blur-2xl" />
+        {/* Center Radiant Core Lighting */}
+        <div className="absolute inset-[190px] rounded-full bg-gradient-to-tr from-indigo-600/30 via-purple-600/25 to-cyan-500/20 blur-3xl" />
       </div>
 
-      {/* Cybernetic High-Tech Grid Floor with Perspective Tilt */}
+      {/* 3D Perspective Cybernetic Laser Grid Floor */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-[450px] bg-[linear-gradient(to_right,#3b82f615_1px,transparent_1px),linear-gradient(to_bottom,#3b82f615_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_100%,#000_70%,transparent_100%)]"
+        className="absolute bottom-0 left-0 right-0 h-[480px] bg-[linear-gradient(to_right,#6366f122_1px,transparent_1px),linear-gradient(to_bottom,#6366f122_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_65%_at_50%_100%,#000_75%,transparent_100%)]"
         style={{
-          transform: 'perspective(600px) rotateX(65deg) scale(1.6)',
+          transform: 'perspective(550px) rotateX(68deg) scale(1.8)',
           transformOrigin: 'bottom center',
         }}
       />

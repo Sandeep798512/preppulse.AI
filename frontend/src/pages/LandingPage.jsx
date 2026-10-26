@@ -111,19 +111,9 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
-      {/* Interactive Continuous 3D Neural Mesh & Cybernetic Particle Canvas */}
+    <div className="min-h-screen bg-[#060a14] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+      {/* Ultra-Smooth 3D Continuous Interactive Canvas & Cybernetic Animation */}
       <Background3DAnimation />
-
-      {/* 3D Background Lighting Mesh & Ambient Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-tr from-indigo-600/30 via-purple-600/20 to-pink-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute top-[400px] -left-[200px] w-[600px] h-[600px] bg-blue-600/20 blur-[140px] rounded-full pointer-events-none -z-10 animate-pulse" />
-      <div className="absolute top-[600px] -right-[200px] w-[600px] h-[600px] bg-indigo-600/20 blur-[140px] rounded-full pointer-events-none -z-10" />
-
-      {/* Grid Pattern Background */}
-      <div
-        className="absolute inset-0 bg-[linear-gradient(to_right,#1f293d15_1px,transparent_1px),linear-gradient(to_bottom,#1f293d15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none -z-10"
-      />
 
       {/* Navbar */}
       <nav className="h-20 border-b border-slate-800/80 bg-[#080d1a]/80 backdrop-blur-xl px-6 md:px-12 flex items-center justify-between sticky top-0 z-50">
@@ -166,7 +156,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 md:px-12 pt-6 md:pt-10 pb-12 max-w-6xl mx-auto text-center space-y-5 relative">
+      <section className="px-6 md:px-12 pt-6 md:pt-10 pb-12 max-w-6xl mx-auto text-center space-y-5 relative z-10">
         {/* Replace pill text with Catchy Premium Tag */}
         <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-pink-500/15 border border-indigo-500/30 px-4 py-1.5 rounded-full text-xs font-bold text-indigo-300 shadow-xl backdrop-blur-md hover:border-indigo-400/50 transition">
           <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-spin" />
@@ -259,7 +249,7 @@ const LandingPage = () => {
       </section>
 
       {/* Integrated Platform Modules 3D Cards Grid */}
-      <section className="px-6 md:px-12 py-16 bg-[#060a14]/60 border-y border-slate-800/80 relative">
+      <section className="px-6 md:px-12 py-16 bg-[#060a14]/60 border-y border-slate-800/80 relative z-10">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center space-y-3">
             <span className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-bold rounded-full border border-indigo-500/20 uppercase tracking-wider">
