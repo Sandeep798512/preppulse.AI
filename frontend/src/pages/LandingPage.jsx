@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Background3DAnimation from '../components/common/Background3DAnimation';
 import {
   Sparkles,
   Zap,
@@ -111,6 +112,9 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+      {/* Interactive Continuous 3D Neural Mesh & Cybernetic Particle Canvas */}
+      <Background3DAnimation />
+
       {/* 3D Background Lighting Mesh & Ambient Glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-tr from-indigo-600/30 via-purple-600/20 to-pink-500/10 blur-[130px] rounded-full pointer-events-none -z-10" />
       <div className="absolute top-[400px] -left-[200px] w-[600px] h-[600px] bg-blue-600/20 blur-[140px] rounded-full pointer-events-none -z-10 animate-pulse" />
