@@ -21,6 +21,7 @@ import {
 
 import { getPlacementReadiness } from '../services/readinessApi';
 import { getCareerCoachOverview } from '../services/careerCoachApi';
+import AnimatedCounter from '../components/common/AnimatedCounter';
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -176,14 +177,14 @@ const DashboardPage = () => {
                 <h3 className="text-sm font-semibold text-slate-300">Placement Preparation Score</h3>
                 <div className="flex items-baseline space-x-2 pt-2">
                   <span className="text-5xl font-extrabold text-white tracking-tight">
-                    {readinessMetrics.placementReadinessScore}
+                    <AnimatedCounter target={readinessMetrics.placementReadinessScore} duration={1600} />
                   </span>
                   <span className="text-lg font-bold text-slate-400">/ 100</span>
                 </div>
               </div>
 
               <p className="text-xs text-slate-300 leading-relaxed pt-1">
-                Your current preparation readiness score is <strong className="text-brand-400">78/100</strong> based on weighted performance across Resume (15%), Aptitude (15%), Technical (20%), Coding (20%), Interview (20%), and JD Match (10%).
+                Your current preparation readiness score is <strong className="text-brand-400">{readinessMetrics.placementReadinessScore}/100</strong> based on weighted performance across Resume (15%), Aptitude (15%), Technical (20%), Coding (20%), Interview (20%), and JD Match (10%).
               </p>
             </div>
 
@@ -200,41 +201,53 @@ const DashboardPage = () => {
 
           {/* Quick Metrics Grid */}
           <div className="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-blue-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Resume Quality</div>
-              <div className="text-2xl font-bold text-blue-400">{readinessMetrics.resumeScore}%</div>
+              <div className="text-2xl font-bold text-blue-400">
+                <AnimatedCounter target={readinessMetrics.resumeScore} duration={1300} suffix="%" />
+              </div>
               <div className="text-[11px] text-slate-400">AI Compatibility Score</div>
             </div>
 
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-amber-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Aptitude Score</div>
-              <div className="text-2xl font-bold text-amber-400">{readinessMetrics.aptitudeScore}%</div>
+              <div className="text-2xl font-bold text-amber-400">
+                <AnimatedCounter target={readinessMetrics.aptitudeScore} duration={1300} suffix="%" />
+              </div>
               <div className="text-[11px] text-slate-400">Quant & Verbal</div>
             </div>
 
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-cyan-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Technical MCQs</div>
-              <div className="text-2xl font-bold text-cyan-400">{readinessMetrics.technicalScore}%</div>
+              <div className="text-2xl font-bold text-cyan-400">
+                <AnimatedCounter target={readinessMetrics.technicalScore} duration={1300} suffix="%" />
+              </div>
               <div className="text-[11px] text-slate-400">CS Fundamentals</div>
             </div>
 
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-rose-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Coding Solved</div>
-              <div className="text-2xl font-bold text-rose-400">{readinessMetrics.codingScore}%</div>
+              <div className="text-2xl font-bold text-rose-400">
+                <AnimatedCounter target={readinessMetrics.codingScore} duration={1300} suffix="%" />
+              </div>
               <div className="text-[11px] text-slate-400">Test Cases Passed</div>
             </div>
 
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-violet-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Mock Interview</div>
-              <div className="text-2xl font-bold text-violet-400">{readinessMetrics.interviewScore}/100</div>
+              <div className="text-2xl font-bold text-violet-400">
+                <AnimatedCounter target={readinessMetrics.interviewScore} duration={1300} />/100
+              </div>
               <div className="text-[11px] text-slate-400">Voice & Technical</div>
             </div>
 
-            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2">
+            <div className="bg-slate-850 border border-slate-800 rounded-2xl p-4 space-y-2 hover:border-emerald-500/30 transition-all hover:-translate-y-0.5">
               <div className="text-xs text-slate-400 font-medium">Prep Streak</div>
               <div className="text-2xl font-bold text-emerald-400 flex items-center space-x-1">
                 <Zap className="w-5 h-5 fill-emerald-400" />
-                <span>{readinessMetrics.streakDays} Days</span>
+                <span>
+                  <AnimatedCounter target={readinessMetrics.streakDays} duration={1000} /> Days
+                </span>
               </div>
               <div className="text-[11px] text-slate-400">Active Daily Practice</div>
             </div>
